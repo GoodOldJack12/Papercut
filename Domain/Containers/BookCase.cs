@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Domain.Containers
 {
-    public class BookCase : IContainer
+    public class BookCase : IStorage
     {
         public int Id { get; set; }
         public string Name { get; set; }

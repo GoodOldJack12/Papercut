@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Domain.Containers
 {
-    public class Bookshelf : IContainer
+    public class Bookshelf : IStorage
     {
         public int Id { get; set; }
         public string Name { get; set; }
