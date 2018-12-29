@@ -4,6 +4,7 @@ using System.Xml;
 using DAL;
 using Domain;
 using Domain.Containers;
+using Domain.Extensions;
 
 namespace BL
 {
@@ -31,24 +32,49 @@ namespace BL
             return repo.CreateStorage(storage);
         }
 
-        public IStorage UpdateStorage(int id)
+        public IStorage UpdateStorage(IStorage storage)
         {
-            throw new NotImplementedException();
+            return repo.UpdateStorage(storage);
         }
 
         public IStorage RemoveStorage(int id)
         {
-            throw new NotImplementedException();
+            return repo.DeleteStorage(id);
         }
 
-        public ITrackedItem AddItem(ITrackedItem item)
+        public IStorage AddItem(ITrackedItem item)
         {
-            throw new NotImplementedException();
+            foreach (var storage in repo.ReadAllStorage())
+            {
+                if (storage.AcceptsItem(item))
+                {
+                    return AddItem(item, storage);
+                }
+            }
+
+            return null;
+        }
+
+        public IStorage AddItem(ITrackedItem item, int storageID)
+        {
+            IStorage storage = GetStorage(storageID).GetStorageFor(item);
+            return AddItem(item, storage);
+        }
+
+        public IStorage AddItem(ITrackedItem item, IStorage storage)
+        {
+            if (!storage.AcceptsItem(item))
+            {
+                return null;
+            }
+            storage?.Items.Add(item);
+            return storage;
         }
 
         public ITrackedItem GetItem(int itemId)
         {
-            throw new NotImplementedException();
+            IStorage storage = repo.ReadAllStorage().First(stor => stor.ContainsItem(itemId));
+            return storage.GetItem(itemId);
         }
     }
 }

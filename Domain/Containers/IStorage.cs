@@ -9,8 +9,9 @@ namespace Domain.Containers
         int Id { get; set; }
         string Name { get; set; }
         int Capacity { get; set; }
-        IEnumerable<ITrackedItem> Items { get; set; }
+        List<ITrackedItem> Items { get; set; }
         IEnumerable<Type> AcceptedItems { get; set; }
         IEnumerable<IStorage> SubStorages { get; set; }
+        IStorage GetStorageFor(ITrackedItem item);
     }
 }

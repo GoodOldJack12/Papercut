@@ -9,10 +9,10 @@ namespace BL
         IStorage GetStorage(string name);
         IStorage AddStorage(IStorage storage);
 
-        IStorage UpdateStorage(int id);
+        IStorage UpdateStorage(IStorage storage);
         IStorage RemoveStorage(int id);
 
-        ITrackedItem AddItem(ITrackedItem item);
+        IStorage AddItem(ITrackedItem item);
         ITrackedItem GetItem(int itemId);
         
     }
