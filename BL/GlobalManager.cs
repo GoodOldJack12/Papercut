@@ -46,6 +46,11 @@ namespace BL
             return targetstorage;
         }
 
+        public IStorage AddItem(ITrackedItem item)
+        {
+           var compatibleStorage = _storageManager.GetAllStorage().First(stor => stor.AcceptsItem(item));
+           return AddItem(item, compatibleStorage.Id);
+        }
         public ITrackedItem RemoveItem(ITrackedItem item)
         {
             var existingItem = _itemManager.GetItem(item.Id);
@@ -74,8 +79,11 @@ namespace BL
 
             found = _storageManager.GetStorage((int) storageId);
             return found.ContainsItem(item.Id) ? found : null;
+        }
 
-
+        public IStorage AddStorage(IStorage storage)
+        {
+            return _storageManager.AddStorage(storage);
         }
     }
 }
