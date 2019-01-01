@@ -42,39 +42,5 @@ namespace BL
             return repo.DeleteStorage(id);
         }
 
-        public IStorage AddItem(ITrackedItem item)
-        {
-            foreach (var storage in repo.ReadAllStorage())
-            {
-                if (storage.AcceptsItem(item))
-                {
-                    return AddItem(item, storage);
-                }
-            }
-
-            return null;
-        }
-
-        public IStorage AddItem(ITrackedItem item, int storageID)
-        {
-            IStorage storage = GetStorage(storageID).GetStorageFor(item);
-            return AddItem(item, storage);
-        }
-
-        public IStorage AddItem(ITrackedItem item, IStorage storage)
-        {
-            if (!storage.AcceptsItem(item))
-            {
-                return null;
-            }
-            storage?.Items.Add(item);
-            return storage;
-        }
-
-        public ITrackedItem GetItem(int itemId)
-        {
-            IStorage storage = repo.ReadAllStorage().First(stor => stor.ContainsItem(itemId));
-            return storage.GetItem(itemId);
-        }
     }
 }

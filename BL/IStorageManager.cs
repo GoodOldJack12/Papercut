@@ -12,8 +12,5 @@ namespace BL
         IStorage UpdateStorage(IStorage storage);
         IStorage RemoveStorage(int id);
 
-        IStorage AddItem(ITrackedItem item);
-        ITrackedItem GetItem(int itemId);
-        
     }
 }
