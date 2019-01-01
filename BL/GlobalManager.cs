@@ -9,18 +9,18 @@ namespace BL
 {
     public class GlobalManager
     {
-        private ITrackedItemManager _itemManager;
-        private IStorageManager _storageManager;
+        public readonly ITrackedItemManager ItemManager;
+        public readonly IStorageManager StorageManager;
 
         public GlobalManager()
         {
-           _itemManager = new ItemManager();
-           _storageManager = new StorageManager();
+           ItemManager = new ItemManager();
+           StorageManager = new StorageManager();
         }
 
         public List<ITrackedItem> GetItemsInStorage(int storageId)
         {
-            return _storageManager.GetStorage(storageId).Items;
+            return StorageManager.GetStorage(storageId).Items;
         }
 
         public IStorage AddItem(ITrackedItem item, int storageId)
@@ -30,17 +30,17 @@ namespace BL
             {
                 return GetLocationOf(item);
             }
-            if (_storageManager.GetStorage(storageId) == null)
+            if (StorageManager.GetStorage(storageId) == null)
             {
                 return null;
             }
 
-            var targetstorage = _storageManager.GetStorage(storageId).GetStorageFor(item);
+            var targetstorage = StorageManager.GetStorage(storageId).GetStorageFor(item);
             if (targetstorage != null)
             {
                 targetstorage.Items.Add(item);
                 item.StorageID = targetstorage.Id;
-                _itemManager.AddItem(item);
+                ItemManager.AddItem(item);
             }
 
             return targetstorage;
@@ -48,19 +48,19 @@ namespace BL
 
         public IStorage AddItem(ITrackedItem item)
         {
-           var compatibleStorage = _storageManager.GetAllStorage().First(stor => stor.AcceptsItem(item));
+           var compatibleStorage = StorageManager.GetAllStorage().First(stor => stor.AcceptsItem(item));
            return AddItem(item, compatibleStorage.Id);
         }
         public ITrackedItem RemoveItem(ITrackedItem item)
         {
-            var existingItem = _itemManager.GetItem(item.Id);
+            var existingItem = ItemManager.GetItem(item.Id);
             if (existingItem == null)
             {
                 return null;
             }
 
             GetLocationOf(item)?.Items.Remove(item);
-            return _itemManager.RemoveItem(item);
+            return ItemManager.RemoveItem(item);
         }
 
         public IStorage GetLocationOf(ITrackedItem item)
@@ -69,7 +69,11 @@ namespace BL
             var storageId = item.StorageID;
             if (storageId == null)
             {
-                found = _storageManager.GetAllStorage().First(stor => stor.Items.Contains(item));
+                found = StorageManager.GetAllStorage().FirstOrDefault(stor => stor.Items.Contains(item));
+                if (found == null)
+                {
+                    return null;
+                }
                 var possibleSubStorage = found.SubStorages.First(stor => stor.Items.Contains(item));
                 found = possibleSubStorage ?? found;
                 item.StorageID = found.Id;
@@ -77,13 +81,13 @@ namespace BL
                 return found;
             }
 
-            found = _storageManager.GetStorage((int) storageId);
+            found = StorageManager.GetStorage((int) storageId);
             return found.ContainsItem(item.Id) ? found : null;
         }
 
         public IStorage AddStorage(IStorage storage)
         {
-            return _storageManager.AddStorage(storage);
+            return StorageManager.AddStorage(storage);
         }
     }
 }
