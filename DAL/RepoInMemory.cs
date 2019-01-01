@@ -33,11 +33,12 @@ namespace DAL
 
         public IStorage CreateStorage(IStorage storage)
         {
-            if (ReadStorage(storage.Id) == null)
+            /*if (ReadStorage(storage.Id) == null)
             {
                 _storages.Add(storage);
-            }
-
+            }*/
+            
+            _storages.Add(storage);
             return storage;
         }
 
