@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using DAL;
@@ -42,5 +43,9 @@ namespace BL
             return repo.DeleteStorage(id);
         }
 
+        public IEnumerable<IStorage> GetAllStorage()
+        {
+            return repo.ReadAllStorage().AsEnumerable();
+        }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Domain;
 using Domain.Containers;
 
@@ -11,6 +13,8 @@ namespace BL
 
         IStorage UpdateStorage(IStorage storage);
         IStorage RemoveStorage(int id);
+
+        IEnumerable<IStorage> GetAllStorage();
 
     }
 }
