@@ -6,6 +6,12 @@ namespace BL
     public class ItemManager : ITrackedItemManager
     {
         private ITrackedItemRepository repo;
+
+        public ItemManager()
+        {
+            this.repo = RepoInMemory.Get();
+        }
+
         public ITrackedItem GetItem(int id)
         {
             return repo.ReadItem(id);

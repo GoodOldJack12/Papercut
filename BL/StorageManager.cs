@@ -15,7 +15,7 @@ namespace BL
 
         public StorageManager()
         {
-            repo = new StorageRepoInMemory();
+            repo = RepoInMemory.Get();
         }
 
         public IStorage GetStorage(int id)

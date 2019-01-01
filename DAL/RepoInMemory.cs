@@ -1,15 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain;
 using Domain.Containers;
 
 namespace DAL
 {
-    public class StorageRepoInMemory : IStorageRepository
+    public class RepoInMemory : IStorageRepository, ITrackedItemRepository
     {
         private List<IStorage> _storages;
-        public StorageRepoInMemory()
+        private List<ITrackedItem> _items;
+        private static RepoInMemory me;
+        private RepoInMemory()
         {
             _storages = new List<IStorage>();
+            _items = new List<ITrackedItem>();
+        }
+
+        public static RepoInMemory Get()
+        {
+            return me ?? (me = new RepoInMemory()) ;
         }
 
         public IStorage ReadStorage(int id)
@@ -47,6 +56,29 @@ namespace DAL
             }
 
             return toRemove;
+        }
+
+        public ITrackedItem ReadItem(int id)
+        {
+            return _items.Find(item => item.Id == id);
+        }
+
+        public ITrackedItem UpdateItem(ITrackedItem item)
+        {
+            //its in memory lol
+            return item;
+        }
+
+        public ITrackedItem DeleteItem(ITrackedItem item)
+        {
+            _items.Remove(item);
+            return item;
+        }
+
+        public ITrackedItem CreateItem(ITrackedItem item)
+        {
+            _items.Add(item);
+            return item;
         }
     }
 }
