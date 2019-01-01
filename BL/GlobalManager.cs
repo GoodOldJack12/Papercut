@@ -14,7 +14,8 @@ namespace BL
 
         public GlobalManager()
         {
-           //TODO initialize managers    
+           _itemManager = new ItemManager();
+           _storageManager = new StorageManager();
         }
 
         public List<ITrackedItem> GetItemsInStorage(int storageId)
@@ -39,6 +40,7 @@ namespace BL
             {
                 targetstorage.Items.Add(item);
                 item.StorageID = targetstorage.Id;
+                _itemManager.AddItem(item);
             }
 
             return targetstorage;
@@ -53,9 +55,7 @@ namespace BL
             }
 
             GetLocationOf(item)?.Items.Remove(item);
-            item.StorageID = null;
-            _itemManager.DeleteItem(item);
-            return item;
+            return _itemManager.RemoveItem(item);
         }
 
         public IStorage GetLocationOf(ITrackedItem item)
