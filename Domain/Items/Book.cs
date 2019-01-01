@@ -7,6 +7,9 @@ namespace Domain
     {
         [Required] 
         public int Id { get; set; }
+
+        public int? StorageID { get; set; }
+
         [Required]
         [RegularExpression(@"^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$",ErrorMessage = "ISBN does not have a valid format!")]
         public string ISBN { get; set; }
